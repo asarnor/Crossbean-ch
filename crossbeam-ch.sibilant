@@ -1,0 +1,63 @@
+/*
+
+;; Sibilant Version
+
+(var example-tasks
+     [{task "make a sandwich", depends ["buy groceries"]}
+      {task "buy groceries", depends ["go to the store"]}
+      {task "go to the store", depends []}])
+
+(var example-tasks1
+     [{task "make a sandwich", depends ["buy groceries"]}
+      {task "buy groceries", depends ["go to the store"]}
+      {task "go to the store", depends ["wake up"]}
+      {task "wake up", depends ["sleep"]}
+      {task "sleep", depends []}])      
+
+;; The following should print:
+;; [ 'go to the store', 'buy groceries', 'make a sandwich' ]
+(console.log (determine-order example-tasks ["make a sandwich"]))
+
+;; The following should also print:
+;; [ 'go to the store', 'buy groceries', 'make a sandwich' ]
+(console.log (determine-order example-tasks ["buy groceries" "make a sandwich"])
+
+;; ["sleep", "wake up", "go to the store"]
+(console.log (determine-order example-tasks1 ["go to the store"])
+
+;; ["sleep", "wake up", "go to the store", "buy groceries", "make a sandwich"]
+(console.log (determine-order example-tasks1 ["go to the store"])
+
+
+
+(def determine-order (tasks, chosen-tasks)
+
+  ;; validate the parameters
+  (if (or (empty? tasks) (empty? chosen-tasks))
+    null
+  )
+  ;; object to easily map task/depends
+  (var object {})
+  ;; final result
+  (var result [])
+  ;; loop through tasks and create key/value pair to easily map data
+  (each curtask tasks
+    (set object curtask.task { depends (ternary (empty? curtask.depends) null (first curtask.depends)) }))
+
+  ;; loop chosen-tasks to map object and populate result     
+  (each subtask chosen-tasks
+    (var curr subtask)
+    ;; if curr == null, we reached the end else stack into result
+    (while (!= curr null)
+      (if (excludes? result curr)
+        (result.unshift curr)
+        (assign curr (get (get object curr) 'depends))
+      )))
+      
+  result)
+
+
+determine-order example-tasks ["make a sandwich"]
+
+
+*/
