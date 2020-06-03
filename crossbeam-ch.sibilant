@@ -26,7 +26,7 @@
 (console.log (determine-order example-tasks1 ["go to the store"])
 
 ;; ["sleep", "wake up", "go to the store", "buy groceries", "make a sandwich"]
-(console.log (determine-order example-tasks1 ["go to the store"])
+(console.log (determine-order example-tasks1 ["make a sandwich"])
 
 
 
